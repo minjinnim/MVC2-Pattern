@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	/* setInterval(()=>alert('time'),6000); */
+
+	/* 	setInterval(function(){
+		alert('time')
+	},4000); */
+	
+	var sec=10;
+
+	/*
+	setInterval(function(){
+		document.querySelector("div").innerHTML=sec--;
+	},1000); 
+	*/
+
+	var tid=setInterval(function(){
+				document.querySelector("div").innerHTML=--sec;
+				
+				if(sec==0){
+					clearTimeout(tid);
+				}
+				
+			},1000);
+	
+	
+</script>
+</head>
+<body>
+	<div>
+	</div>
+</body>
+</html>

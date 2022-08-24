@@ -1,0 +1,134 @@
+/* *{
+    margin:0을 주면 브라우저에 빈공간이 없어짐
+    margin:0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+} */
+html, body {
+    height: 100%;
+    display:flex;
+    flex-flow: column;
+    margin:0;
+}
+
+header{
+	width:100%;
+	height:200px; 
+	position:relative;
+	z-index:100;
+}
+
+.navbar{
+    display: flex;
+    background-color:#263343;
+    /* justify-content 내용에 대한 위치 조정, space-between: 가로 공간 분할 */
+    justify-content: space-between;
+    /* align-items 세로 중앙 정렬, 안에있는 아이템을 중간으로 정렬시킴 */
+    align-items: center;
+}
+
+.navbar_logo{
+    color:white;
+    font-size: 30px;
+}
+
+.navbar_logo>i{
+    color:coral;
+}
+
+a{
+    text-decoration: none;
+    color:white;
+}
+
+.navbar_menu{
+    color:white;
+    list-style: none;
+    display: flex;
+    /* padding-left: 0; */
+}
+
+.navbar_menu>li{
+    padding:8px 12px;
+}
+
+.navbar_menu>li:hover{
+    background-color:#d49466;
+    border-radius: 4px;
+}
+
+.navbar_icon{
+    color:white;
+    list-style: none;
+    display: flex;
+    padding-left: 0;
+}
+
+.navbar_icon>li{
+    padding:8px 12px;
+}
+
+.navbar_toogleBtn{
+    display:none;
+    position: absolute;
+    right:18px;
+    top:10px;
+    color:aliceblue;
+}
+
+@media(max-width:768px){
+    .navbar{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .navbar_menu{
+        flex-direction: column;
+        align-items: center;
+        width:100%;
+    }
+    .navbar_menu>li{
+        text-align: center;
+        width:100%;
+    }
+    .navbar_icon{
+        align-items: center;
+        width:100%;
+        display: none;
+    }
+    .navbar_toogleBtn{
+        display: block;
+    }
+}
+
+main{
+	/* width:100%; */
+	position:relative;
+	top:50px;
+    text-align:center;
+    /* overflow:scroll */
+    flex:1;
+}
+
+.cre_homeIcon{
+	padding-bottom:20px;
+	font-size:50px;
+}
+.cre_content{
+	list-style: none;
+	padding-bottom:20px;
+}
+
+footer{
+    width:100%;
+    height:100px;
+    background-color:#263343;
+    position:relative;
+    /* bottom:0px;
+    left:0px; */
+    top:100px;
+    text-align:center;
+}
+
+.h1{
+	color:white;
+}

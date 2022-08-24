@@ -1,0 +1,149 @@
+--댓글 게시판에 필요한 사항
+게시판분류:String kind;
+글입력번호:int idx; -sequence 
+글제목: String title;
+글내용:String content;
+조회수int readcount;
+그룹번호:int groupid;
+댓글깊이:int depth;
+그룹내글번호:int groupSeq;
+->글입력번호가 시퀸스일 경우 글입력번호를 참조하여 사용가능해 필요없는 사항일수있다.
+글쓴이아이디:String writeId;
+글쓴이이름:String writeName;
+작성일:Data writeDay;
+첨부파일:String file;
+글삭제여부:int isdel;
+
+--오라클로 데이터베이스 구성
+drop table board;
+
+create table board(
+idx number primary key,
+title varchar2(100) not null,
+content clob,
+readcount number(8) default(0) not null,
+groupid number not null, --parentid 댓글이 아닌 글의 경우 기본값 0
+depth number not null,
+groupseq number not null,
+writeid varchar2(30) not null,
+writename varchar2(30) not null,
+writeday date not null,
+filename varchar2(260),
+isdel number(1) check(isdel between 0 and 1),
+kind varchar2(20) not null
+);
+
+
+drop sequence board_idx_seq;
+create sequence board_idx_seq increment by 1 start with 1;
+
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'1post','게시판 내용1',0,
+board_idx_seq.currval,0,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'2post','게시판 내용2',0,
+board_idx_seq.currval,0,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'3post','게시판 내용3',0,
+board_idx_seq.currval,0,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'4post','게시판 내용4',0,
+board_idx_seq.currval,0,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+select * from board;
+
+--오라클에서 groupid는 parentid로 사용하기 때문에 댓글이 아닌 경우 0으로 값변경
+update board set groupid=0;
+--depth=1 댓글 달기
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'2-1comment','게시판 내용2-1',0,
+2,1,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'2-2comment','게시판 내용2-2',0,
+2,1,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'2-3comment','게시판 내용2-3',0,
+2,1,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+select * from board;
+
+--댓글의 댓글
+insert into board (idx,title,content,readcount,
+groupid,depth,groupSeq,
+writeId,writeName,writeDay,
+isdel,kind)
+values(board_idx_seq.nextval,'2-2-1comment','게시판 내용2-2-1',0,
+6,2,1,
+'admin','kmj',sysdate,
+0,'normalboard');
+
+--출력
+select * from board start with groupid=0 
+connect by prior idx=groupid 
+order siblings by idx desc;
+
+--여러개의 글을 반복하여 올리기
+begin
+    for I in 5..30
+    loop
+    insert into board(idx,title,content, readcount, 
+    groupid, depth, groupseq,
+    writeid,writename, writeday,
+    isdel,kind) 
+    values(board_idx_seq.nextval,I || 'post','게시판 내용'|| I, 0,
+    board_idx_seq.currval,0, 1,
+    'admin','김자바',sysdate,
+    0,'일반게시판');
+    end loop;
+end;
+
+update board set groupid=0 where idx>8;
+
+select * from board;
+
+update board
+set title=title||'수정', content=content||'수정',writeday=sysdate
+where idx=4;
+
+select * from board where idx=4;
